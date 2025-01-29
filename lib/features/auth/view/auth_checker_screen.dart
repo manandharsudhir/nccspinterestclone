@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'password_screen.dart';
+
 class AuthCheckerScreen extends StatelessWidget {
   const AuthCheckerScreen({super.key});
 
@@ -35,7 +37,13 @@ class AuthCheckerScreen extends StatelessWidget {
                   height: 16,
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => PasswordScreen(),
+                      ),
+                    );
+                  },
                   child: Text("Continue"),
                 ),
                 SizedBox(
