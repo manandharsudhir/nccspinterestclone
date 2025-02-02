@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'password_screen.dart';
 
-class AuthCheckerScreen extends StatelessWidget {
+class AuthCheckerScreen extends StatefulWidget {
   const AuthCheckerScreen({super.key});
 
+  @override
+  State<AuthCheckerScreen> createState() => _AuthCheckerScreenState();
+}
+
+class _AuthCheckerScreenState extends State<AuthCheckerScreen> {
+  final emailController = TextEditingController();
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,20 +39,42 @@ class AuthCheckerScreen extends StatelessWidget {
                   height: 32,
                 ),
                 TextField(
+                  controller: emailController,
                   decoration: InputDecoration(hintText: "Enter Email"),
                 ),
                 SizedBox(
                   height: 16,
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => PasswordScreen(),
-                      ),
-                    );
+                  onPressed: () async {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    final supabaseClient = Supabase.instance.client;
+                    try {
+                      final user = await supabaseClient
+                          .from("user")
+                          .select('id')
+                          .eq('email', emailController.text)
+                          .single();
+                      print(user);
+                    } catch (e) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => PasswordScreen(),
+                        ),
+                      );
+                    } finally {
+                      setState(() {
+                        isLoading = false;
+                      });
+                    }
                   },
-                  child: Text("Continue"),
+                  child: isLoading
+                      ? CircularProgressIndicator(
+                          color: Colors.white,
+                        )
+                      : Text("Continue"),
                 ),
                 SizedBox(
                   height: 32,

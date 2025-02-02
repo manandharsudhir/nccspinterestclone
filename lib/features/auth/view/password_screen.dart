@@ -1,6 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+
+import 'interest_selection_screen.dart';
+import 'name_entry_screen.dart';
+import 'password_entry_screen.dart';
 
 class PasswordScreen extends StatefulWidget {
   const PasswordScreen({super.key});
@@ -44,15 +46,6 @@ class _PasswordScreenState extends State<PasswordScreen> {
         ),
         centerTitle: true,
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ElevatedButton(
-          onPressed: () {
-            controller.jumpToPage(3);
-          },
-          child: Text("Continue"),
-        ),
-      ),
       body: PageView(
         controller: controller,
         onPageChanged: (index) {
@@ -61,50 +54,10 @@ class _PasswordScreenState extends State<PasswordScreen> {
           });
         },
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Text(
-                  "Create Password",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                ),
-                TextField(),
-
-                // Row(
-                //   children: [
-                //     IconButton(
-                //       onPressed: () {},
-                //       icon: Icon(Icons.chevron_left),
-                //     ),
-                //   ],
-                // )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Text(
-                  "Create Password",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                ),
-                TextField(),
-
-                // Row(
-                //   children: [
-                //     IconButton(
-                //       onPressed: () {},
-                //       icon: Icon(Icons.chevron_left),
-                //     ),
-                //   ],
-                // )
-              ],
-            ),
-          ),
-          Container(
-            color: Colors.green,
+          PasswordEntryScreen(controller: controller),
+          InterestSelectionScreen(),
+          NameEntryScreen(
+            pageController: controller,
           ),
           Container(
             color: Colors.purple,
