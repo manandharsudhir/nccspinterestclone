@@ -61,11 +61,15 @@ class _AuthCheckerScreenState extends State<AuthCheckerScreen> {
                           .single();
 
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => LoginScreen()));
+                          builder: (context) => LoginScreen(
+                                email: emailController.text,
+                              )));
                     } catch (e) {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => LoginScreen(),
+                          builder: (context) => LoginScreen(
+                            email: emailController.text,
+                          ),
                         ),
                       );
                     } finally {

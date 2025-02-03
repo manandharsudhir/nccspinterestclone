@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:pinterestclone/features/auth/view/widget/social_auth_widget.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({super.key, required this.email});
+
+  final String email;
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -12,12 +14,22 @@ class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
   bool obscureText = true;
 
+  final emailController = TextEditingController();
+
+  @override
+  void initState() {
+    emailController.text = widget.email;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
           icon: Icon(Icons.close),
         ),
         centerTitle: true,
@@ -44,6 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               TextFormField(
+                controller: emailController,
                 validator: (value) {
                   if ((value ?? "").isEmpty) {
                     return "Please enter an email";
