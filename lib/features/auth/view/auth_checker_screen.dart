@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pinterestclone/features/auth/view/login_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'password_screen.dart';
+import 'widget/social_auth_widget.dart';
 
 class AuthCheckerScreen extends StatefulWidget {
   const AuthCheckerScreen({super.key});
@@ -52,16 +54,18 @@ class _AuthCheckerScreenState extends State<AuthCheckerScreen> {
                     });
                     final supabaseClient = Supabase.instance.client;
                     try {
-                      final user = await supabaseClient
+                      await supabaseClient
                           .from("user")
                           .select('id')
                           .eq('email', emailController.text)
                           .single();
-                      print(user);
+
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => LoginScreen()));
                     } catch (e) {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => PasswordScreen(),
+                          builder: (context) => LoginScreen(),
                         ),
                       );
                     } finally {
@@ -79,46 +83,7 @@ class _AuthCheckerScreenState extends State<AuthCheckerScreen> {
                 SizedBox(
                   height: 32,
                 ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                  ),
-                  onPressed: () {},
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Image.asset(
-                        "assets/logos/pinterest.png",
-                        height: 16,
-                        width: 16,
-                      ),
-                      SizedBox(
-                        width: 16,
-                      ),
-                      Text("Continue with Google"),
-                    ],
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Image.asset(
-                        "assets/logos/pinterest.png",
-                        height: 16,
-                        width: 16,
-                      ),
-                      SizedBox(
-                        width: 16,
-                      ),
-                      Text("Continue with Facebook"),
-                    ],
-                  ),
-                ),
+                SocialAuthWidget(),
                 SizedBox(
                   height: 32,
                 ),
