@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:pinterestclone/features/auth/view/widget/social_auth_widget.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
+  bool obscureText = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +54,27 @@ class LoginScreen extends StatelessWidget {
               SizedBox(
                 height: 8,
               ),
-              TextField(),
+              TextFormField(
+                obscureText: obscureText,
+                decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        obscureText = !obscureText;
+                      });
+                    },
+                    icon: Icon(obscureText
+                        ? Icons.visibility_sharp
+                        : Icons.visibility_off),
+                  ),
+                ),
+                validator: (value) {
+                  if ((value ?? "").isEmpty) {
+                    return "Please enter an email";
+                  }
+                  return null;
+                },
+              ),
               SizedBox(
                 height: 32,
               ),
