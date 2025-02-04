@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class BirthdateScreen extends StatefulWidget {
   const BirthdateScreen({
@@ -17,6 +18,8 @@ class BirthdateScreen extends StatefulWidget {
 class _BirthdateScreenState extends State<BirthdateScreen> {
   TextEditingController textcontroller = TextEditingController();
 
+  DateTime dateOfBirth = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -27,8 +30,22 @@ class _BirthdateScreenState extends State<BirthdateScreen> {
             "hello ${widget.name}",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
           ),
-          TextField(
-            controller: textcontroller,
+          GestureDetector(
+            onTap: () async {
+              final pickedDate = await showDatePicker(
+                  context: context,
+                  firstDate: DateTime(1995),
+                  lastDate: DateTime.now());
+              if (pickedDate != null) {
+                setState(() {
+                  dateOfBirth = pickedDate;
+                });
+              }
+            },
+            child: Text(
+              DateFormat.yMd().format(dateOfBirth),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+            ),
           ),
           Spacer(),
           Padding(
