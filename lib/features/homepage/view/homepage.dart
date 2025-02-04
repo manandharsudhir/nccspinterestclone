@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
 class Homepage extends StatelessWidget {
-  const Homepage({super.key});
+  Homepage({super.key, required this.name});
+
+  String name;
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return Scaffold(
+      body: Text(name),
+    );
   }
 }

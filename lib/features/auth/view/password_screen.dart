@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pinterestclone/features/auth/view/birthdate_screen.dart';
 
 import 'interest_selection_screen.dart';
 import 'name_entry_screen.dart';
@@ -15,6 +16,14 @@ class _PasswordScreenState extends State<PasswordScreen> {
   PageController controller = PageController();
   int currentIndex = 0;
 
+  String? name;
+
+  void setName(String enteredName) {
+    setState(() {
+      name = enteredName;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +32,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
           spacing: 16,
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(
-            4,
+            6,
             (index) => Container(
               width: 16,
               height: 16,
@@ -54,14 +63,20 @@ class _PasswordScreenState extends State<PasswordScreen> {
           });
         },
         children: [
-          PasswordEntryScreen(controller: controller),
-          InterestSelectionScreen(),
+          PasswordEntryScreen(
+            controller: controller,
+          ),
           NameEntryScreen(
-            pageController: controller,
+            controller: controller,
+            nameSetter: setName,
           ),
-          Container(
-            color: Colors.purple,
+          BirthdateScreen(
+            controller: controller,
+            name: name ?? "",
           ),
+          Container(),
+          Container(),
+          Container()
         ],
       ),
     );

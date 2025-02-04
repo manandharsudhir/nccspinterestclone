@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pinterestclone/features/auth/view/login_screen.dart';
+import 'package:pinterestclone/features/auth/view/password_entry_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'password_screen.dart';
@@ -67,9 +68,7 @@ class _AuthCheckerScreenState extends State<AuthCheckerScreen> {
                     } catch (e) {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => LoginScreen(
-                            email: emailController.text,
-                          ),
+                          builder: (context) => PasswordScreen(),
                         ),
                       );
                     } finally {

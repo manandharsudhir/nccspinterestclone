@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-class NameEntryScreen extends StatefulWidget {
-  const NameEntryScreen({
+class BirthdateScreen extends StatefulWidget {
+  const BirthdateScreen({
     super.key,
     required this.controller,
-    required this.nameSetter,
+    required this.name,
   });
 
   final PageController controller;
-  final Function(String) nameSetter;
+  final String name;
 
   @override
-  State<NameEntryScreen> createState() => _NameEntryScreenState();
+  State<BirthdateScreen> createState() => _BirthdateScreenState();
 }
 
-class _NameEntryScreenState extends State<NameEntryScreen> {
+class _BirthdateScreenState extends State<BirthdateScreen> {
   TextEditingController textcontroller = TextEditingController();
 
   @override
@@ -24,7 +24,7 @@ class _NameEntryScreenState extends State<NameEntryScreen> {
       child: Column(
         children: [
           Text(
-            "What's your name?",
+            "hello ${widget.name}",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
           ),
           TextField(
@@ -38,8 +38,6 @@ class _NameEntryScreenState extends State<NameEntryScreen> {
                 widget.controller.nextPage(
                     duration: Duration(milliseconds: 200),
                     curve: Curves.easeIn);
-
-                widget.nameSetter(textcontroller.text);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor:

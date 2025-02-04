@@ -70,6 +70,8 @@ class _LoginScreenState extends State<LoginScreen> {
               TextFormField(
                 obscureText: obscureText,
                 decoration: InputDecoration(
+                  hintText: "Enter Password",
+                  labelText: "Password",
                   suffixIcon: IconButton(
                     onPressed: () {
                       setState(() {
