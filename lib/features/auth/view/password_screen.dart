@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pinterestclone/features/auth/providers/auth_provider.dart';
 import 'package:pinterestclone/features/auth/view/birthdate_screen.dart';
 
 import 'interest_selection_screen.dart';
 import 'name_entry_screen.dart';
 import 'password_entry_screen.dart';
 
-class PasswordScreen extends StatefulWidget {
+class PasswordScreen extends ConsumerStatefulWidget {
   const PasswordScreen({super.key});
 
   @override
-  State<PasswordScreen> createState() => _PasswordScreenState();
+  ConsumerState<PasswordScreen> createState() => _PasswordScreenState();
 }
 
-class _PasswordScreenState extends State<PasswordScreen> {
+class _PasswordScreenState extends ConsumerState<PasswordScreen> {
   PageController controller = PageController();
   int currentIndex = 0;
 
@@ -26,6 +28,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authProvider);
     return Scaffold(
       appBar: AppBar(
         title: Row(

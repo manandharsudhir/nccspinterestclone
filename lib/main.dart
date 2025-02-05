@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pinterestclone/features/counter/counter_screen.dart';
 
 import 'features/splashscreen/view/splash_screen.dart';
 
@@ -12,7 +14,7 @@ Future<void> main() async {
     anonKey:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9renJyc3VlZnZ5enhsaGdxaGpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg0NjA0ODcsImV4cCI6MjA1NDAzNjQ4N30.Vmv6cXn0j4yS-UN2wXZ35McqK5HaqIYbKP5GUoajmtA',
   );
-  runApp(MyApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -22,7 +24,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: CounterScreen(),
       theme: ThemeData(
         primaryColor: Colors.red,
         inputDecorationTheme: InputDecorationTheme(

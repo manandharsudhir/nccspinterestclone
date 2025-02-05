@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pinterestclone/features/auth/providers/auth_provider.dart';
 import 'package:pinterestclone/features/auth/view/login_screen.dart';
-import 'package:pinterestclone/features/auth/view/password_entry_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'password_screen.dart';
@@ -48,41 +49,46 @@ class _AuthCheckerScreenState extends State<AuthCheckerScreen> {
                 SizedBox(
                   height: 16,
                 ),
-                ElevatedButton(
-                  onPressed: () async {
-                    setState(() {
-                      isLoading = true;
-                    });
-                    final supabaseClient = Supabase.instance.client;
-                    try {
-                      await supabaseClient
-                          .from("user")
-                          .select('id')
-                          .eq('email', emailController.text)
-                          .single();
-
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => LoginScreen(
-                                email: emailController.text,
-                              )));
-                    } catch (e) {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => PasswordScreen(),
-                        ),
-                      );
-                    } finally {
+                Consumer(builder: (context, ref, _) {
+                  return ElevatedButton(
+                    onPressed: () async {
                       setState(() {
-                        isLoading = false;
+                        isLoading = true;
                       });
-                    }
-                  },
-                  child: isLoading
-                      ? CircularProgressIndicator(
-                          color: Colors.white,
-                        )
-                      : Text("Continue"),
-                ),
+                      final supabaseClient = Supabase.instance.client;
+                      try {
+                        await supabaseClient
+                            .from("user")
+                            .select('id')
+                            .eq('email', emailController.text)
+                            .single();
+
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => LoginScreen(
+                                  email: emailController.text,
+                                )));
+                      } catch (e) {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => PasswordScreen(),
+                          ),
+                        );
+                      } finally {
+                        setState(() {
+                          isLoading = false;
+                        });
+                        ref
+                            .read(authProvider.notifier)
+                            .setEmail(emailController.text);
+                      }
+                    },
+                    child: isLoading
+                        ? CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                        : Text("Continue"),
+                  );
+                }),
                 SizedBox(
                   height: 32,
                 ),
