@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pinterestclone/features/auth/providers/auth_provider.dart';
 
 class NameEntryScreen extends StatefulWidget {
   const NameEntryScreen({
     super.key,
     required this.controller,
-    required this.nameSetter,
   });
 
   final PageController controller;
-  final Function(String) nameSetter;
 
   @override
   State<NameEntryScreen> createState() => _NameEntryScreenState();
@@ -33,20 +33,21 @@ class _NameEntryScreenState extends State<NameEntryScreen> {
           Spacer(),
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                widget.controller.nextPage(
-                    duration: Duration(milliseconds: 200),
-                    curve: Curves.easeIn);
-
-                widget.nameSetter(textcontroller.text);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor:
-                    textcontroller.text != "" ? Colors.red : Colors.grey,
-              ),
-              child: Text("Continue"),
-            ),
+            child: Consumer(builder: (context, ref, _) {
+              return ElevatedButton(
+                onPressed: () {
+                  widget.controller.nextPage(
+                      duration: Duration(milliseconds: 200),
+                      curve: Curves.easeIn);
+                  ref.read(authProvider).setName(textcontroller.text);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      textcontroller.text != "" ? Colors.red : Colors.grey,
+                ),
+                child: Text("Continue"),
+              );
+            }),
           )
           // Row(
           //   children: [

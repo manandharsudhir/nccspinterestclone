@@ -18,17 +18,8 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
   PageController controller = PageController();
   int currentIndex = 0;
 
-  String? name;
-
-  void setName(String enteredName) {
-    setState(() {
-      name = enteredName;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authProvider);
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -71,13 +62,11 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
           ),
           NameEntryScreen(
             controller: controller,
-            nameSetter: setName,
           ),
           BirthdateScreen(
             controller: controller,
-            name: name ?? "",
           ),
-          Container(),
+          InterestSelectionScreen(),
           Container(),
           Container()
         ],

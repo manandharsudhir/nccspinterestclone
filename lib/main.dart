@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pinterestclone/features/auth/view/interest_selection_screen.dart';
 import 'package:pinterestclone/features/counter/counter_screen.dart';
 
 import 'features/splashscreen/view/splash_screen.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: CounterScreen(),
+      home: SplashScreen(),
       theme: ThemeData(
         primaryColor: Colors.red,
         inputDecorationTheme: InputDecorationTheme(

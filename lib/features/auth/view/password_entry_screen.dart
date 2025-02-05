@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pinterestclone/features/auth/providers/auth_provider.dart';
 
 class PasswordEntryScreen extends StatefulWidget {
   const PasswordEntryScreen({
@@ -31,18 +33,23 @@ class _PasswordEntryScreenState extends State<PasswordEntryScreen> {
           Spacer(),
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                widget.controller.nextPage(
-                    duration: Duration(milliseconds: 200),
-                    curve: Curves.easeIn);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor:
-                    textcontroller.text != "" ? Colors.red : Colors.grey,
-              ),
-              child: Text("Continue"),
-            ),
+            child: Consumer(builder: (context, ref, _) {
+              return ElevatedButton(
+                onPressed: () {
+                  widget.controller.nextPage(
+                      duration: Duration(milliseconds: 200),
+                      curve: Curves.easeIn);
+                  ref
+                      .read(authProvider.notifier)
+                      .setPassword(textcontroller.text);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      textcontroller.text != "" ? Colors.red : Colors.grey,
+                ),
+                child: Text("Continue"),
+              );
+            }),
           )
           // Row(
           //   children: [

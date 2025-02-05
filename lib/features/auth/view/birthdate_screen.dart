@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:pinterestclone/features/auth/providers/auth_provider.dart';
 
-class BirthdateScreen extends StatefulWidget {
+class BirthdateScreen extends ConsumerStatefulWidget {
   const BirthdateScreen({
     super.key,
     required this.controller,
-    required this.name,
   });
 
   final PageController controller;
-  final String name;
 
   @override
-  State<BirthdateScreen> createState() => _BirthdateScreenState();
+  ConsumerState<BirthdateScreen> createState() => _BirthdateScreenState();
 }
 
-class _BirthdateScreenState extends State<BirthdateScreen> {
+class _BirthdateScreenState extends ConsumerState<BirthdateScreen> {
   TextEditingController textcontroller = TextEditingController();
 
   DateTime dateOfBirth = DateTime.now();
@@ -27,7 +27,7 @@ class _BirthdateScreenState extends State<BirthdateScreen> {
       child: Column(
         children: [
           Text(
-            "hello ${widget.name}",
+            "hello ${ref.read(authProvider).name}",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
           ),
           GestureDetector(
@@ -55,6 +55,7 @@ class _BirthdateScreenState extends State<BirthdateScreen> {
                 widget.controller.nextPage(
                     duration: Duration(milliseconds: 200),
                     curve: Curves.easeIn);
+                ref.read(authProvider).setAge(dateOfBirth);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor:
