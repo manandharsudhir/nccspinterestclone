@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:pinterestclone/features/auth/view/widget/social_auth_widget.dart';
+import 'package:pinterestclone/features/homepage/view/homepage.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -101,11 +102,19 @@ class _LoginScreenState extends State<LoginScreen> {
               ElevatedButton(
                 onPressed: () async {
                   if (formKey.currentState!.validate()) {
-                    final response = await Supabase.instance.client.auth
-                        .signInWithPassword(
-                            password: passwordController.text,
-                            email: emailController.text);
-                    log(response.toString());
+                    try {
+                      final response = await Supabase.instance.client.auth
+                          .signInWithPassword(
+                              password: passwordController.text,
+                              email: emailController.text);
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => Homepage(
+                              name:
+                                  response.user?.userMetadata?["name"] ?? "")));
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Login failed")));
+                    }
                   }
                 },
                 child: Text("Login"),

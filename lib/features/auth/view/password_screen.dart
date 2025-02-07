@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pinterestclone/core/api_response_enum.dart';
 import 'package:pinterestclone/features/auth/providers/auth_provider.dart';
 import 'package:pinterestclone/features/auth/view/birthdate_screen.dart';
 
@@ -20,6 +21,8 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -49,26 +52,30 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
         ),
         centerTitle: true,
       ),
-      body: PageView(
-        controller: controller,
-        onPageChanged: (index) {
-          setState(() {
-            currentIndex = index;
-          });
-        },
-        children: [
-          PasswordEntryScreen(
-            controller: controller,
-          ),
-          NameEntryScreen(
-            controller: controller,
-          ),
-          BirthdateScreen(
-            controller: controller,
-          ),
-          InterestSelectionScreen(),
-        ],
-      ),
+      body: authState.createUserState == ApiState.loading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : PageView(
+              controller: controller,
+              onPageChanged: (index) {
+                setState(() {
+                  currentIndex = index;
+                });
+              },
+              children: [
+                PasswordEntryScreen(
+                  controller: controller,
+                ),
+                NameEntryScreen(
+                  controller: controller,
+                ),
+                BirthdateScreen(
+                  controller: controller,
+                ),
+                InterestSelectionScreen(),
+              ],
+            ),
     );
   }
 }

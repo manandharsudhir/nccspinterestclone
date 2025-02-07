@@ -14,6 +14,7 @@ class AuthProvider extends ChangeNotifier {
   List<InterestModel> selectedInterest = [];
 
   ApiState apiState = ApiState.initial;
+  ApiState createUserState = ApiState.initial;
 
   void setEmail(String providedEmail) {
     email = providedEmail;
@@ -40,7 +41,9 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void createUser() async {
+  createUser() async {
+    createUserState = ApiState.loading;
+    notifyListeners();
     try {
       final AuthResponse res = await Supabase.instance.client.auth
           .signUp(email: email, password: password!, data: {
@@ -56,9 +59,9 @@ class AuthProvider extends ChangeNotifier {
         "gender": "male",
       });
 
-      print(res.toString());
+      createUserState = ApiState.success;
     } catch (e) {
-      print(e.toString());
+      createUserState = ApiState.error;
     }
   }
 }

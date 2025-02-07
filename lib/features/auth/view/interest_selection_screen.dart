@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pinterestclone/core/api_response_enum.dart';
 import 'package:pinterestclone/features/auth/providers/auth_provider.dart';
 import 'package:pinterestclone/features/auth/providers/interest_provider.dart';
+import 'package:pinterestclone/features/auth/view/login_screen.dart';
 
 class InterestSelectionScreen extends ConsumerStatefulWidget {
   const InterestSelectionScreen({super.key});
@@ -26,6 +27,7 @@ class _InterestSelectionScreenState
   @override
   Widget build(BuildContext context) {
     final interestState = ref.watch(interestProvider);
+    final authstate = ref.watch(authProvider);
     switch (interestState.apiState) {
       case ApiState.initial:
       case ApiState.loading:
@@ -82,11 +84,21 @@ class _InterestSelectionScreenState
               child: Visibility(
                 visible: interestState.hasSelectedAnInterest,
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     final selectedInterets =
                         ref.read(interestProvider).getSelectedInterest();
                     ref.read(authProvider).setInterest(selectedInterets);
-                    ref.read(authProvider).createUser();
+                    await ref.read(authProvider).createUser();
+                    if (authstate.createUserState == ApiState.success) {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) =>
+                              LoginScreen(email: authstate.email ?? "")));
+                      return;
+                    }
+                    if (authstate.createUserState == ApiState.error) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Signup failed")));
+                    }
                   },
                   child: Text("Continue"),
                 ),
