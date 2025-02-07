@@ -26,7 +26,7 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
           spacing: 16,
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(
-            6,
+            4,
             (index) => Container(
               width: 16,
               height: 16,
@@ -67,8 +67,6 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
             controller: controller,
           ),
           InterestSelectionScreen(),
-          Container(),
-          Container()
         ],
       ),
     );

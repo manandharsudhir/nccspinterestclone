@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:pinterestclone/features/auth/view/widget/social_auth_widget.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key, required this.email});
@@ -15,6 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool obscureText = true;
 
   final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   void initState() {
@@ -68,6 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 8,
               ),
               TextFormField(
+                controller: passwordController,
                 obscureText: obscureText,
                 decoration: InputDecoration(
                   hintText: "Enter Password",
@@ -94,8 +99,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 32,
               ),
               ElevatedButton(
-                onPressed: () {
-                  formKey.currentState!.validate();
+                onPressed: () async {
+                  if (formKey.currentState!.validate()) {
+                    final response = await Supabase.instance.client.auth
+                        .signInWithPassword(
+                            password: passwordController.text,
+                            email: emailController.text);
+                    log(response.toString());
+                  }
                 },
                 child: Text("Login"),
               ),

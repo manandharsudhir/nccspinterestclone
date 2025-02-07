@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pinterestclone/core/api_response_enum.dart';
+import 'package:pinterestclone/features/auth/providers/auth_provider.dart';
 import 'package:pinterestclone/features/auth/providers/interest_provider.dart';
 
 class InterestSelectionScreen extends ConsumerStatefulWidget {
@@ -31,36 +33,66 @@ class _InterestSelectionScreenState
           child: CircularProgressIndicator(),
         );
       case ApiState.error:
-        return Center(
-          child: Text("Error"),
+        return Column(
+          children: [
+            Text("Error"),
+            ElevatedButton(
+              onPressed: () {
+                ref.read(interestProvider).getAllInterest();
+              },
+              child: Text("Try Again"),
+            )
+          ],
         );
       case ApiState.success:
-        return GridView.builder(
-          itemBuilder: (context, index) => GestureDetector(
-            onTap: () {
-              ref.read(interestProvider).selectInterest(index);
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                color: interestState.interest[index].isSelected
-                    ? Colors.amber
-                    : Colors.red,
-                image: DecorationImage(
-                  image: NetworkImage(interestState.interest[index].name ?? ""),
+        return Stack(
+          children: [
+            GridView.builder(
+              itemBuilder: (context, index) => GestureDetector(
+                onTap: () {
+                  ref.read(interestProvider).selectInterest(index);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: interestState.interest[index].isSelected
+                        ? Colors.amber
+                        : Colors.red,
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          interestState.interest[index].name ?? ""),
+                    ),
+                  ),
+                  child: Text(
+                    interestState.interest[index].name ?? "",
+                    style: TextStyle(color: Colors.white, fontSize: 32),
+                  ),
                 ),
               ),
-              child: Text(
-                interestState.interest[index].name ?? "",
-                style: TextStyle(color: Colors.white, fontSize: 32),
+              itemCount: interestState.interest.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                mainAxisSpacing: 16,
+                crossAxisSpacing: 16,
               ),
             ),
-          ),
-          itemCount: interestState.interest.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            mainAxisSpacing: 16,
-            crossAxisSpacing: 16,
-          ),
+            Positioned(
+              bottom: 16,
+              right: 16,
+              left: 16,
+              child: Visibility(
+                visible: interestState.hasSelectedAnInterest,
+                child: ElevatedButton(
+                  onPressed: () {
+                    final selectedInterets =
+                        ref.read(interestProvider).getSelectedInterest();
+                    ref.read(authProvider).setInterest(selectedInterets);
+                    ref.read(authProvider).createUser();
+                  },
+                  child: Text("Continue"),
+                ),
+              ),
+            ),
+          ],
         );
     }
   }

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pinterestclone/core/api_response_enum.dart';
 import 'package:pinterestclone/features/auth/model/interest_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -14,6 +15,8 @@ class InterestProvider extends ChangeNotifier {
   ];
 
   ApiState apiState = ApiState.initial;
+
+  bool hasSelectedAnInterest = false;
 
   getAllInterest() async {
     apiState = ApiState.loading;
@@ -32,13 +35,22 @@ class InterestProvider extends ChangeNotifier {
 
   selectInterest(int index) {
     interest[index].isSelected = !interest[index].isSelected;
+    checkHasSelection();
     notifyListeners();
   }
-}
 
-enum ApiState {
-  loading,
-  initial,
-  success,
-  error,
+  checkHasSelection() {
+    try {
+      interest.firstWhere((e) => e.isSelected);
+      hasSelectedAnInterest = true;
+    } catch (e) {
+      hasSelectedAnInterest = false;
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  List<InterestModel> getSelectedInterest() {
+    return interest.where((e) => e.isSelected).toList();
+  }
 }
