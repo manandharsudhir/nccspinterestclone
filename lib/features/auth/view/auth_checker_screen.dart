@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pinterestclone/features/auth/providers/auth_provider.dart';
+import 'package:pinterestclone/features/auth/view/image_preview.dart';
 import 'package:pinterestclone/features/auth/view/login_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -20,6 +22,25 @@ class _AuthCheckerScreenState extends State<AuthCheckerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final pickedImage =
+              await ImagePicker().pickImage(source: ImageSource.camera);
+          if (pickedImage != null) {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ImagePreview(
+                  path: pickedImage.path,
+                ),
+              ),
+            );
+          } else {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text("Please pick an image")));
+          }
+        },
+        child: Icon(Icons.camera),
+      ),
       body: ListView(
         children: [
           Image.asset("assets/images/login_image.png"),
