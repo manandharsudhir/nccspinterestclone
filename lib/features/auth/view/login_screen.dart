@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:pinterestclone/features/auth/view/widget/social_auth_widget.dart';
 import 'package:pinterestclone/features/homepage/view/homepage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -103,14 +104,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () async {
                   if (formKey.currentState!.validate()) {
                     try {
-                      final response = await Supabase.instance.client.auth
+                      final AuthResponse response = await Supabase
+                          .instance.client.auth
                           .signInWithPassword(
                               password: passwordController.text,
                               email: emailController.text);
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => Homepage(
-                              name:
-                                  response.user?.userMetadata?["name"] ?? "")));
+
+                      final sharedPref = await SharedPreferences.getInstance();
+                      sharedPref.setString(
+                          "token", response.session!.accessToken);
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => Homepage()),
+                        (route) => false,
+                      );
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text("Login failed")));

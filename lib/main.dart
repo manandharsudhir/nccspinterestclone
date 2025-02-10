@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pinterestclone/features/auth/view/interest_selection_screen.dart';
 import 'package:pinterestclone/features/counter/counter_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'features/splashscreen/view/splash_screen.dart';
 

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pinterestclone/features/homepage/view/homepage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../auth/view/auth_checker_screen.dart';
 
@@ -12,10 +14,22 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    Future.delayed(Duration(seconds: 3), () {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-        return AuthCheckerScreen();
-      }));
+    Future.delayed(Duration(seconds: 3), () async {
+      final sharedPref = await SharedPreferences.getInstance();
+      final token = sharedPref.getString(
+        "token",
+      );
+      if (token == null) {
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (context) {
+          return AuthCheckerScreen();
+        }));
+      } else {
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (context) {
+          return Homepage();
+        }));
+      }
     });
 
     super.initState();
