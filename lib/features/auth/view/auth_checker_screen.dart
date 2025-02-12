@@ -1,6 +1,10 @@
+import 'dart:developer';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pinterestclone/core/base_client.dart';
 import 'package:pinterestclone/features/auth/providers/auth_provider.dart';
 import 'package:pinterestclone/features/auth/view/image_preview.dart';
 import 'package:pinterestclone/features/auth/view/login_screen.dart';
@@ -24,20 +28,23 @@ class _AuthCheckerScreenState extends State<AuthCheckerScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final pickedImage =
-              await ImagePicker().pickImage(source: ImageSource.camera);
-          if (pickedImage != null) {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => ImagePreview(
-                  path: pickedImage.path,
-                ),
-              ),
-            );
-          } else {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text("Please pick an image")));
-          }
+          // final pickedImage =
+          //     await ImagePicker().pickImage(source: ImageSource.camera);
+          // if (pickedImage != null) {
+          //   Navigator.of(context).push(
+          //     MaterialPageRoute(
+          //       builder: (context) => ImagePreview(
+          //         path: pickedImage.path,
+          //       ),
+          //     ),
+          //   );
+          // } else {
+          //   ScaffoldMessenger.of(context)
+          //       .showSnackBar(SnackBar(content: Text("Please pick an image")));
+          // }
+
+          final response = await BaseClient.instance.get("movie/now_playing");
+          log(response.toString());
         },
         child: Icon(Icons.camera),
       ),

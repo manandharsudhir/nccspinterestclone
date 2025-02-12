@@ -29,6 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
             .pushReplacement(MaterialPageRoute(builder: (context) {
           return Homepage();
         }));
+        // Navigator.of(context).pushNamed("/authChecker");
       }
     });
 
